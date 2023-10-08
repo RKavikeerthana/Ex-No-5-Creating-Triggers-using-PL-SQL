@@ -17,57 +17,48 @@
 NAME: R KAVIKEERTHANA
 Reg.no: 212222100022
 ```
-```
-CREATE TABLE employed(
-  empid NUMBER,
-  empname VARCHAR2(10),
-  dept VARCHAR2(10),
-  salary NUMBER
-);
 
-CREATE TABLE sal_log (
-  log_id NUMBER GENERATED ALWAYS AS IDENTITY,
-  empid NUMBER,
-  empname VARCHAR2(10),
-  old_salary NUMBER,
-  new_salary NUMBER,
-  update_date DATE
-);
-
-```
 ### Create employee table
-![image](https://github.com/RKavikeerthana/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/120431120/f3612219-7b23-411b-84de-4ffa24d9ff62)
+```
+SQL> create table employeeee(empid NUMBER, empname VARCHAR(10), dept VARCHAR(10),salary NUMBER);
+```
+![Screenshot 2023-10-08 131839](https://github.com/RKavikeerthana/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/120431120/bc31707b-db02-48cd-a357-7bf4154ab335)
+
 
 ### Create salary_log table
-![image](https://github.com/RKavikeerthana/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/120431120/01f9a48f-9cca-4dd4-be29-4b9383bc9145)
+```
+SQL> Create table salary_log (log_id NUMBER , empid NUMBER,empname VARCHAR(10),old_salary NUMBER,new_salary NUMBER,updat
+e_date DATE);
+```
+![image](https://github.com/RKavikeerthana/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/120431120/353db50b-a50c-4384-8351-4ffd4bb55f9c)
 
 ### PLSQL Trigger code
 ```
-->Create the trigger
-Create the trigger
-CREATE OR REPLACE TRIGGER log_sal_update
-BEFORE UPDATE ON employed
-FOR EACH ROW
-BEGIN
-  IF :OLD.salary != :NEW.salary THEN
-    INSERT INTO sal_log (empid, empname, old_salary, new_salary, update_date)
-    VALUES (:OLD.empid, :OLD.empname, :OLD.salary, :NEW.salary, SYSDATE);
-  END IF;
-END;
-/
-->Update the salary of an employee
-UPDATE employed
-SET salary = 60000
-WHERE empid = 1;
-->Display the employee table
-SELECT * FROM employed;
+SQL> create or replace trigger salary_log_update
+  2  before update on employeeee
+  3  for each row
+  4  declare
+  5  v_old_salary NUMBER;
+  6  v_new_salary NUMBER;
+  7  begin
+  8  v_old_salary:= :old.salary;
+  9  v_new_salary:= :new.salary;
+ 10  if v_old_salary <> v_new_salary then
+ 11  insert into salary_log (empid, empname, old_salary, new_salary, update_date)
+ 12  values(:old.empid, :old.empname, v_old_salary, v_new_salary, sysdate);
+ 13  end if;
+ 14  end;
+ 15  /
 
-->Display the salary_log table
-SELECT * FROM sal_log;
+SQL> update employeeee set salary=15000 where empid=1;
 
 ```
+
 ### Output:
-![image](https://github.com/RKavikeerthana/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/120431120/f5975066-41a1-4c86-8dd0-b729631d8479)
+![image](https://github.com/RKavikeerthana/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/120431120/3044638f-3877-45f3-85cf-1a714410f624)
+![image](https://github.com/RKavikeerthana/Ex-No-5-Creating-Triggers-using-PL-SQL/assets/120431120/b00efd06-0578-4795-9e9d-72b6b5691f32)
+
+
 
 ### Result:
 The program has been implemented successfully.
